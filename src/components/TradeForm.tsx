@@ -274,7 +274,7 @@ export default function TradeForm({
 
   return (
     <FloatingElement
-      style={{ display: 'flex', flexDirection: 'column', ...style }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column', ...style }}
     >
       <div style={{ flex: 1 }}>
         <Radio.Group
@@ -291,9 +291,12 @@ export default function TradeForm({
             style={{
               width: '50%',
               textAlign: 'center',
-              background: side === 'buy' ? '#02bf76' : '',
-              borderColor: side === 'buy' ? '#02bf76' : '',
+              background: side === 'buy' ? '#01EC98' : '',
+              color: side === 'buy' ? '#163F52' : '',
+              fontWeight: side === 'buy' ? 500 : 'normal',
+              borderColor: side === 'buy' ? '#01EC98' : '',
             }}
+            className="rounded"
           >
             BUY
           </Radio.Button>
@@ -302,9 +305,11 @@ export default function TradeForm({
             style={{
               width: '50%',
               textAlign: 'center',
-              background: side === 'sell' ? '#F23B69' : '',
-              borderColor: side === 'sell' ? '#F23B69' : '',
+              background: side === 'sell' ? '#FF4885' : '',
+              fontWeight: side === 'sell' ? 500 : 'normal',
+              borderColor: side === 'sell' ? '#FF4885' : '',
             }}
+            className="rounded"
           >
             SELL
           </Radio.Button>
@@ -370,6 +375,7 @@ export default function TradeForm({
           type="primary"
           size="large"
           loading={submitting}
+          className="rounded"
         >
           Buy {baseCurrency}
         </BuyButton>
@@ -381,6 +387,7 @@ export default function TradeForm({
           type="primary"
           size="large"
           loading={submitting}
+          className="rounded"
         >
           Sell {baseCurrency}
         </SellButton>

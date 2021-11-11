@@ -6,9 +6,7 @@ import { getDecimalCount } from '../utils/utils';
 import FloatingElement from './layout/FloatingElement';
 import { BonfidaTrade } from '../utils/types';
 
-const Title = styled.div`
-  color: rgba(255, 255, 255, 1);
-`;
+const Title = styled.div``;
 const SizeTitle = styled(Row)`
   padding: 20px 0 14px;
   color: #434a59;
@@ -25,12 +23,14 @@ export default function PublicTrades({ smallScreen }) {
           ? { flex: 1 }
           : {
               marginTop: '10px',
-              minHeight: '270px',
+              marginBottom: '10px',
+              minHeight: '350px',
               maxHeight: 'calc(100vh - 700px)',
+              overflow: 'hidden'
             }
       }
     >
-      <Title>Recent Market trades</Title>
+      <Title className="user-info-p">Recent Market trades</Title>
       <SizeTitle>
         <Col span={8}>Price ({quoteCurrency}) </Col>
         <Col span={8} style={{ textAlign: 'right' }}>
@@ -46,9 +46,12 @@ export default function PublicTrades({ smallScreen }) {
             marginRight: '-20px',
             paddingRight: '5px',
             overflowY: 'scroll',
+            height: smallScreen
+              ? '100%'
+              : '350px',
             maxHeight: smallScreen
               ? 'calc(100% - 75px)'
-              : 'calc(100vh - 800px)',
+              : 'calc(100vh - 320px)',
           }}
         >
           {trades.map((trade: BonfidaTrade, i: number) => (

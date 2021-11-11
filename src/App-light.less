@@ -1,4 +1,4 @@
-@import './ant-custom.less';
+@import './ant-custom-light.less';
 
 .App {
   text-align: center;
@@ -39,9 +39,8 @@
   }
 }
 
-
 html,body{
-  background: #0f1923;
+  background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
 }
 input[type=number]::-webkit-inner-spin-button {
   opacity: 0;
@@ -56,15 +55,15 @@ input[type=number]:focus::-webkit-inner-spin-button {
 }
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #2d313c;
+  background: #f1f2f7;
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #5b5f67;
+  background: #01ec98;
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #5b5f67;
+  background: #05cf89;
 }
 /* Custom CSS */
 .rounded {
@@ -90,8 +89,8 @@ input[type=number]:focus::-webkit-inner-spin-button {
   display: none;
 }
 .badge-primary {
-  color: #ED54F4; 
-  background: #262626;
+  color: #262626; 
+  background: #01EC98;
 }
 .badge-soon {
   font-size: 9px;
@@ -103,7 +102,7 @@ input[type=number]:focus::-webkit-inner-spin-button {
 .table-rounded {
   border-radius: 20px;
   padding: 10px;
-  background-color: #222c35;
+  background-color: #fff;
 }
 /* END - Custom CSS */
 .ant-slider-track, .ant-slider:hover .ant-slider-track {
@@ -122,10 +121,10 @@ input[type=number]:focus::-webkit-inner-spin-button {
   border: 2px solid #01EC98; 
 }
 .ant-table-tbody > tr.ant-table-row:hover > td {
-  background: #273043;
+  background: #dedede;
 }
 .ant-table-tbody > tr > td {
-  border-bottom: 2px solid #434343;
+  border-bottom: 1px solid #dedede;
 }
 .ant-table-tbody > tr:last-child > td {
   border-bottom: none;
@@ -134,48 +133,60 @@ input[type=number]:focus::-webkit-inner-spin-button {
   border-bottom: none;
 }
 .ant-divider-horizontal.ant-divider-with-text::before, .ant-divider-horizontal.ant-divider-with-text::after {
-  border-top: 1px solid #434a59 !important;
+  border-top: 1px solid #dedede !important;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
 }
 .ant-layout {
-    background: #0f1923
-  }
-  .ant-table {
-    background: #222c35;
-  }
-  .ant-table-thead > tr > th {
-    background: #222c35;
-  }
+  background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+.ant-table {
+  background: #fff !important;
+  background-color: #fff !important;
+}
+.ant-table-thead > tr > th {
+  background: #fff;
+}
 .ant-select-item-option-content {
   img {
     margin-right: 4px;
   }
 }
 .ant-modal-content {
-  background-color: #212734;
+  background-color: #dedede;
 }
-
 @-webkit-keyframes highlight {
   from { background-color: #01EC98;}
-  to {background-color: #1A2029;}
+  to {background-color: #dedede;}
 }
 @-moz-keyframes highlight {
   from { background-color: #01EC98;}
-  to {background-color: #1A2029;}
+  to {background-color: #dedede;}
 }
 @-keyframes highlight {
   from { background-color: #01EC98;}
-  to {background-color: #1A2029;}
+  to {background-color: #dedede;}
 }
 .flash {
   -moz-animation: highlight 0.5s ease 0s 1 alternate ;
   -webkit-animation: highlight 0.5s ease 0s 1 alternate;
   animation: highlight 0.5s ease 0s 1 alternate;
 }
-
 /* Background Snow CSS */
 .bg-snow {
   position: absolute;
   z-index: 0;
+}
+.wrapper-floating-el {
+  background-color: #fff !important;
+}
+.user-info-p {
+  color: 'rgba(0,0,0,0.5)';
+}
+.select-el {
+  color: 'rgb(236,236,236)';
+}
+.select-el2 {
+  color: rgb(255, 255, 255);
 }
 /* END - Background Snow CSS */
 /* Responsive Menu CSS */
@@ -184,23 +195,19 @@ input[type=number]:focus::-webkit-inner-spin-button {
   height: 40px;
   padding: 5px 14px 5px 6px;
 }
-
 .App-Bar {
   padding: 0px;
   justify-content: space-between !important;
 }
-
 .app-left {
   padding: 8px 10px;
 }
-
 .divider {
-  border-left: 1px solid #434343;
+  border-left: 1px solid #dedede !important;
   width: 2px;
   height: 40px;
   margin-right: 14px;
 }
-
 .app-btn {
   font-style: normal;
   font-weight: normal;
@@ -208,9 +215,8 @@ input[type=number]:focus::-webkit-inner-spin-button {
   line-height: 19px;
   border-width: 0px;
 }
-
 .app-bar-box {
-  background: #222c35;
+  background: #fff;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   display: flex;
@@ -218,7 +224,6 @@ input[type=number]:focus::-webkit-inner-spin-button {
   align-items: center;
   height: 56px;
 }
-
 .app-bar-inner {
   display: flex;
   min-width: 50%;
@@ -226,22 +231,18 @@ input[type=number]:focus::-webkit-inner-spin-button {
   position: relative;
   height: auto;
 }
-
 .app-bar-inner .app-bar-item {
   cursor: pointer;
   padding: 0 30px;
   color: #547595;
   font-size: 18px;
 }
-
 .app-bar-inner .app-bar-item a {
   color: inherit;
 }
-
 .app-bar-inner .app-bar-item>.active {
   color: white;
 }
-
 .app-left {
   align-items: center;
   display: flex;
@@ -255,7 +256,6 @@ input[type=number]:focus::-webkit-inner-spin-button {
   flex-direction: row;
   margin: 15px;
 }
-
 header.ant-layout-header.App-Bar {
   width: 100%;
   background: transparent;
@@ -264,6 +264,34 @@ header.ant-layout-header.App-Bar {
   height: 80px;
 }
 
+.table-rounded, .wrapper-floating-el {
+  border: 1px solid #dedede;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1)
+}
+
+.badge-soon {
+  z-index: 1;
+}
+
+.btn-action {
+  background: rgb(1, 236, 152) !important;
+  color: rgb(22, 63, 82) !important;
+  font-weight: 500 !important;
+  border-color: rgb(1, 236, 152) !important;
+}
+
+.btn-connect {
+  border: none;
+}
+
+.ant-modal .ant-table tbody > tr > td.ant-table-cell-fix-left, .ant-modal .ant-table tbody > tr > td.ant-table-cell-fix-right {
+  background-color: #fff;
+}
+
+.ant-modal .ant-table.ant-table-small thead > tr > th {
+  background-color: #fff;
+  border-bottom: 1px solid #dedede;
+}
 /* END - Responsive Menu CSS */
 
 /* START - Trading View */
@@ -273,5 +301,15 @@ header.ant-layout-header.App-Bar {
 }
 .wrapper-floating-el .ant-card-body .tradingview-chart iframe{
   border-radius: 10px;
+}
+/* END - Trading View */
+
+/* START - Glass effect on light */
+.wrapper-floating-el, .ant-table-wrapper  {
+  backdrop-filter: blur(10px) saturate(100%) contrast(45%) brightness(130%);
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+.ant-table  {
+  background: transparent !important;
 }
 /* END - Trading View */

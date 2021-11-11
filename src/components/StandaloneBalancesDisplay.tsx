@@ -35,7 +35,7 @@ const Tip = styled.p`
 `;
 
 const ActionButton = styled(Button)`
-  color: #2abdd2;
+  color: #01EC98;
   background-color: #212734;
   border-width: 0px;
 `;
@@ -235,12 +235,13 @@ export default function StandaloneBalancesDisplay() {
                   block
                   size="large"
                   onClick={() => setBaseOrQuote(baseOrQuote)}
+                  className="rounded btn-action"
                 >
                   Deposit
                 </ActionButton>
               </Col>
               <Col style={{ width: 150 }}>
-                <ActionButton block size="large" onClick={onSettleFunds}>
+                <ActionButton block size="large" onClick={onSettleFunds} className="rounded btn-action">
                   Settle
                 </ActionButton>
               </Col>

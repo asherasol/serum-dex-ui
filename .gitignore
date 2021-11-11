@@ -21,6 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn-lock
 
 .idea
 
@@ -31,3 +32,8 @@ yarn-error.log*
 public/charting_library
 src/charting_library
 public/datafeeds
+
+# Firebase
+firebase.json
+.firebase
+.firebaserc

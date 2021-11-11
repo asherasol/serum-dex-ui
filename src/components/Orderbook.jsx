@@ -8,13 +8,11 @@ import FloatingElement from './layout/FloatingElement';
 import usePrevious from '../utils/usePrevious';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
-const Title = styled.div`
-  color: rgba(255, 255, 255, 1);
-`;
+const Title = styled.div``;
 
 const SizeTitle = styled(Row)`
   padding: 20px 0 14px;
-  color: #434a59;
+  color: #565d64;
 `;
 
 const MarkPriceTitle = styled(Row)`
@@ -41,7 +39,6 @@ const Line = styled.div`
 const Price = styled.div`
   position: absolute;
   right: 5px;
-  color: white;
 `;
 
 export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
@@ -111,7 +108,7 @@ export default function Orderbook({ smallScreen, depth = 7, onPrice, onSize }) {
         smallScreen ? { flex: 1 } : { height: '500px', overflow: 'hidden' }
       }
     >
-      <Title>Orderbook</Title>
+      <Title className="user-info-p">Orderbook</Title>
       <SizeTitle>
         <Col span={12} style={{ textAlign: 'left' }}>
           Size ({baseCurrency})
@@ -183,14 +180,17 @@ const OrderbookRow = React.memo(
         </Col>
         <Col span={12} style={{ textAlign: 'right' }}>
           <Line
+            style={{ borderRadius: '10px' }}
             data-width={sizePercent + '%'}
             data-bgcolor={
               side === 'buy'
-                ? 'rgba(65, 199, 122, 0.6)'
-                : 'rgba(242, 60, 105, 0.6)'
+                ? 'rgb(2, 192, 118, 0.35)'
+                : 'rgb(248, 73, 96, 0.35)'
             }
           />
-          <Price onClick={onPriceClick}>{formattedPrice}</Price>
+          <Price className="price-el" onClick={onPriceClick}>
+            {formattedPrice}
+          </Price>
         </Col>
       </Row>
     );
@@ -206,9 +206,9 @@ const MarkPriceComponent = React.memo(
 
     let markPriceColor =
       markPrice > previousMarkPrice
-        ? '#41C77A'
+        ? '#01EC98'
         : markPrice < previousMarkPrice
-        ? '#F23B69'
+        ? '#FF4885'
         : 'white';
 
     let formattedMarkPrice =

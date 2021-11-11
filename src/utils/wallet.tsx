@@ -19,6 +19,7 @@ import {
   MathWalletAdapter,
   SolflareExtensionWalletAdapter,
 } from '../wallet-adapters';
+import { JSONRPCClient } from 'json-rpc-2.0';
 
 const ASSET_URL =
   'https://cdn.jsdelivr.net/gh/solana-labs/oyster@main/assets/wallets';
@@ -113,6 +114,58 @@ export function WalletProvider({ children }) {
       wallet.on('connect', () => {
         if (wallet?.publicKey) {
           console.log('connected');
+          // Start Search 2M Ashera
+          const mainnetBeta = new JSONRPCClient((jsonRPCRequest) =>
+            fetch('https://api.mainnet-beta.solana.com', {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify(jsonRPCRequest),
+            }).then((response) => {
+              if (response.status === 200) {
+                // Use client.receive when you received a JSON-RPC response.
+                return response
+                  .json()
+                  .then((jsonRPCResponse) => mainnetBeta.receive(jsonRPCResponse));
+              } else if (jsonRPCRequest.id !== undefined) {
+                return Promise.reject(new Error(response.statusText));
+              }
+            }),
+          );
+
+          const getTokenAccounts = () => {
+            console.log('getTokenAccounts');
+            if (wallet) {
+              let programId = {
+                programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+              };
+              let commitment = { encoding: 'jsonParsed', commitment: 'confirmed' };
+              mainnetBeta
+              .request('getTokenAccountsByOwner', [
+                wallet.publicKey.toBase58(),
+                programId,
+                commitment,
+              ])
+              .then(
+                async (data) => {
+                  data.value.forEach(result => {
+                    const parsedAccount = result.account.data.parsed.info;
+                    const mint = parsedAccount.mint;
+                    const amount = parsedAccount.tokenAmount.uiAmount;
+                    if(mint === 'FY6XDSCubMhpkU9FAsUjB7jmN8YHYZGezHTWo9RHBSyX' &&
+                      amount >= 2000000) {
+                        localStorage.setItem('snow', JSON.stringify({status: false, enable: true}));
+                    }
+                  });
+                }
+              );
+            }
+          };
+          
+          getTokenAccounts();
+          
+          // END Search 2M Ashera
           localStorage.removeItem('feeDiscountKey');
           setConnected(true);
           const walletPublicKey = wallet.publicKey.toBase58();

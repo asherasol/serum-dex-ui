@@ -12,6 +12,7 @@
     "@project-serum/pool": "0.2.2",
     "@project-serum/serum": "^0.13.58",
     "@project-serum/sol-wallet-adapter": "^0.2.0",
+    "@solana/spl-token-registry": "^0.2.158",
     "@solana/spl-name-service": "^0.1.2",
     "@solana/spl-token": "^0.1.6",
     "@solana/web3.js": "^1.22.0",
@@ -28,17 +29,21 @@
     "bn.js": "^5.1.3",
     "craco-less": "^1.17.0",
     "immutable-tuple": "^0.4.10",
+    "json-rpc-2.0": "^0.2.16",
     "nanoid": "^3.1.22",
     "qrcode.react": "^1.0.0",
     "query-string": "^7.0.1",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.5",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-css-theme-switcher": "^0.3.0",
     "react-dom": "^16.13.1",
+    "react-highlight-words": "^0.17.0",
     "react-is": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-tsparticles": "^1.33.2",
     "styled-components": "^5.1.1",
     "superstruct": "0.8.3",
     "typescript": "^3.9.7"
@@ -46,11 +51,15 @@
   "scripts": {
     "predeploy": "git pull --ff-only && yarn && yarn build",
     "deploy": "gh-pages -d build",
-    "start": "craco start",
-    "build": "craco build",
+    "start": "yarn prepareDex && craco start --env=development",
+    "build": "yarn prepareDex && craco build --env=production",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write src"
+    "prettier": "prettier --write src",
+    "prepareDex": "yarn copy-files && yarn gen-css && yarn gen-dark-css",
+    "copy-files": "cp -r ./src/{markets.json,token-mints.json} ./node_modules/@project-serum/serum/lib/",
+    "gen-css": "lessc ./src/App-light.less ./public/theme/antd.min.css --js",
+    "gen-dark-css": "lessc ./src/App.less ./public/theme/antd.dark.min.css --js"
   },
   "eslintConfig": {
     "extends": "react-app"

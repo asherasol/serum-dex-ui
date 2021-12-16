@@ -27101,6 +27101,9 @@ header.ant-layout-header.App-Bar {
 .color-green {
   color: #41c77a;
 }
+.color-title {
+  color: #fff;
+}
 .pointer {
   cursor: pointer;
 }
@@ -27108,7 +27111,7 @@ header.ant-layout-header.App-Bar {
   border-radius: 50%;
 }
 .mkt-active {
-  color: #f5b217;
+  color: #41c77a;
   font-weight: bold;
 }
 /* END - Market Info */

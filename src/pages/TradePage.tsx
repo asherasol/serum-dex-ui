@@ -193,8 +193,8 @@ function TradePageInner() {
 
   // Snow mode handle
   const SnowSwitch = () => {
-    const [snow, setSnow] = useState({status: false, enable: false});
-    useEffect(() => {
+    const [snow, setSnow] = useState({status: false, enable: true});
+    /* useEffect(() => {
       const intervalId = setInterval(() => {
         const saved_snow = localStorage.getItem('snow');
         if (saved_snow) {
@@ -207,7 +207,7 @@ function TradePageInner() {
       return () => {
         clearInterval(intervalId); //This is important
       }
-    }, [snow.enable]);
+    }, [snow.enable]); */
 
     const onChangeSnow = (value) => {
       setSnow({status: value, enable: true});
@@ -297,7 +297,7 @@ function TradePageInner() {
   const [mktPrice24, setMktmktPrice24] = useState('');
   const [mktChange24, setMktChange24] = useState(0);
   const [mktChange24Perc, setMktChangePerc24] = useState('');
-  const [mktColor, setMktColor] = useState('rgb(1, 236, 152)');
+  const [mktClassColor, setMktClassColor] = useState('color-green');
   useEffect(() => {
     function nFormatter(num, digits) {
       const lookup = [
@@ -345,7 +345,8 @@ function TradePageInner() {
             marketAddress === allMarketsData[i]?.address)
           ) {
           const color = (lastprice - oldPrice) < 0 ? 'rgb(242, 59, 105)' : 'rgb(1, 236, 152)';
-          setMktColor(color);
+          const classColor = (lastprice - oldPrice) < 0 ? 'color-red' : 'color-green';
+          setMktClassColor(classColor);
           setMktName(allMarketsData[i]?.nameEn);
           setMktSymbol(allMarketsData[i]?.symbol);
           setMktBase(allMarketsData[i]?.base);
@@ -421,7 +422,7 @@ function TradePageInner() {
                   <>
                     <Col xl={24} lg={24}  md={24} xxl={24} sm={24} xs={24}
                       style={{ borderBottom: '2px solid rgb(67, 74, 89)', marginBottom: '20px'}}>
-                      <span style={{ fontWeight: 'bold', fontSize: '20px', color: '#fff', marginRight: '6px'}}>
+                      <span className='color-title' style={{ fontWeight: 'bold', fontSize: '20px', marginRight: '6px'}}>
                       <Avatar
                         src={mktIcon}
                         style={{marginRight:'5px', marginBottom: '5px'}}
@@ -436,17 +437,17 @@ function TradePageInner() {
                       <div>
                         <div>
                           <div style={{letterSpacing: '1px', marginTop: '20px', fontWeight: 'bold', lineHeight: '120%'}}>
-                            <span style={{fontSize: '32px', color:mktColor}}>{mktLastPrice}</span>
-                            <span style={{fontSize: '14px', color:mktColor}}>USDC</span>
+                            <span className={mktClassColor} style={{fontSize: '32px'}}>{mktLastPrice}</span>
+                            <span className={mktClassColor} style={{fontSize: '14px'}}>USDC</span>
                           </div>
                           <div style={{lineHeight: '120%', marginTop: '3px'}}>
-                            <span style={{fontSize: '11px', color:mktColor}}>Change</span>
-                            <span style={{marginLeft: '5px', marginRight: '5px', fontSize: '14px', color:mktColor}}>
+                            <span className={mktClassColor} style={{fontSize: '11px'}}>Change</span>
+                            <span className={mktClassColor} style={{marginLeft: '5px', marginRight: '5px', fontSize: '14px'}}>
                               {mktChange24Perc}%
                             </span>
-                            <span style={{fontWeight: 'bold', color:mktColor}}>
+                            <span className={mktClassColor} style={{fontWeight: 'bold'}}>
                               {
-                                mktColor === 'rgb(1, 236, 152)' ?
+                                mktClassColor === 'color-green' ?
                                 <ArrowUpOutlined  style={{marginRight: '5px', fontSize: '15px'}}/>
                                 :
                                 <ArrowDownOutlined  style={{marginRight: '5px', fontSize: '15px'}}/>
@@ -461,7 +462,8 @@ function TradePageInner() {
                       <Row style={{marginTop: '5px'}}>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>High Price</Col>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
-                          style={{color: 'rgb(1, 236, 152)', borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
+                          className='color-green'
+                          style={{borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
                             {mktHighPrice}
                         </Col>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Volume(24h)</Col>
@@ -476,7 +478,8 @@ function TradePageInner() {
                       <Row style={{marginTop: '13px'}}>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Low Price</Col>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
-                          style={{color: 'rgb(242, 59, 105)', borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
+                          className='color-red'
+                          style={{borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
                             {mktLowPrice}
                         </Col>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Price(24h)</Col>
@@ -635,7 +638,7 @@ function MarketSelector({
               style={{
                 padding: '10px',
                 // @ts-ignore
-                backgroundColor: i % 2 === 0 ? 'rgb(39, 44, 61)' : null,
+                backgroundColor: i % 2 === 0 ? 'rgba(22, 63, 82, 20%)' : null,
               }}
             >
               <Avatar

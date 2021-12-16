@@ -26837,7 +26837,7 @@ header.ant-layout-header.App-Bar {
 }
 .table-market table tr td {
   padding: 0px;
-  background: #222c35;
+  background: transparent;
 }
 .table-market table thead th {
   font-weight: bold;
@@ -26854,7 +26854,10 @@ header.ant-layout-header.App-Bar {
   color: #f23b69;
 }
 .color-green {
-  color: #41c77a;
+  color: #12895e;
+}
+.color-title {
+  color: #000;
 }
 .pointer {
   cursor: pointer;
@@ -26863,7 +26866,13 @@ header.ant-layout-header.App-Bar {
   border-radius: 50%;
 }
 .mkt-active {
-  color: #f5b217;
+  color: #12895e;
   font-weight: bold;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+a.ant-typography,
+.ant-typography a,
+a {
+  color: #12895e;
 }
 /* END - Market Info */

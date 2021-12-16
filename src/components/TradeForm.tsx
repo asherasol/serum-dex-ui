@@ -1,4 +1,4 @@
-import {Button, Input, Radio, Slider, Switch} from 'antd';
+import {Button, Input, Slider, Switch, Tabs} from 'antd';
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
@@ -271,49 +271,19 @@ export default function TradeForm({
       setSubmitting(false);
     }
   }
+  const { TabPane } = Tabs;
 
   return (
     <FloatingElement
-      style={{ height: '100%', display: 'flex', flexDirection: 'column', ...style }}
+      style={{ display: 'flex', flexDirection: 'column', ...style }}
     >
-      <div style={{ flex: 1 }}>
-        <Radio.Group
-          onChange={(e) => setSide(e.target.value)}
-          value={side}
-          buttonStyle="solid"
-          style={{
-            marginBottom: 8,
-            width: '100%',
-          }}
-        >
-          <Radio.Button
-            value="buy"
-            style={{
-              width: '50%',
-              textAlign: 'center',
-              background: side === 'buy' ? '#01EC98' : '',
-              color: side === 'buy' ? '#163F52' : '',
-              fontWeight: side === 'buy' ? 500 : 'normal',
-              borderColor: side === 'buy' ? '#01EC98' : '',
-            }}
-            className="rounded"
-          >
-            BUY
-          </Radio.Button>
-          <Radio.Button
-            value="sell"
-            style={{
-              width: '50%',
-              textAlign: 'center',
-              background: side === 'sell' ? '#FF4885' : '',
-              fontWeight: side === 'sell' ? 500 : 'normal',
-              borderColor: side === 'sell' ? '#FF4885' : '',
-            }}
-            className="rounded"
-          >
-            SELL
-          </Radio.Button>
-        </Radio.Group>
+      <div style={{ marginBottom: '20px' }}>
+        <Tabs defaultActiveKey={side} onChange={(e) => {const a = e==='buy' ? 'buy' : 'sell'; setSide(a)}}>
+          <TabPane tab="BUY" key="buy">
+          </TabPane>
+          <TabPane tab="SELL" key="sell">
+          </TabPane>
+        </Tabs>
         <Input
           style={{ textAlign: 'right', paddingBottom: 8 }}
           addonBefore={<div style={{ width: '30px' }}>Price</div>}
@@ -375,7 +345,6 @@ export default function TradeForm({
           type="primary"
           size="large"
           loading={submitting}
-          className="rounded"
         >
           Buy {baseCurrency}
         </BuyButton>
@@ -387,11 +356,13 @@ export default function TradeForm({
           type="primary"
           size="large"
           loading={submitting}
-          className="rounded"
         >
           Sell {baseCurrency}
         </SellButton>
       )}
+      <div style={{ textAlign: 'center', fontSize: '13px', marginTop: '20px' }}>
+        You must have a minimum of 0.03 SOL to place an order.
+      </div>
     </FloatingElement>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Avatar, Button, Col, Popover, Row, Select, Typography, Card, Switch } from 'antd';
+import { Avatar, Button, Col, Row, Select, Typography, Card, Switch, Table, Skeleton, Tag } from 'antd';
 import styled from 'styled-components';
 import Orderbook from '../components/Orderbook';
 import UserInfoTable from '../components/UserInfoTable';
@@ -15,16 +15,15 @@ import {
 import markets_ashera from '../markets.json';
 import TradeForm from '../components/TradeForm';
 import TradesTable from '../components/TradesTable';
-import LinkAddress from '../components/LinkAddress';
 import DeprecatedMarketsInstructions from '../components/DeprecatedMarketsInstructions';
 import {
   DeleteOutlined,
   HeartFilled,
-  InfoCircleOutlined,
-  PlusCircleOutlined,
-  WalletOutlined,
   BulbFilled,
   StarFilled,
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  WalletOutlined,
 } from '@ant-design/icons';
 import CustomMarketDialog from '../components/CustomMarketDialog';
 import MyTokenDialog from '../components/MyTokenDialog';
@@ -34,6 +33,8 @@ import { nanoid } from 'nanoid';
 
 import { useThemeSwitcher } from 'react-css-theme-switcher';
 import { TVChartContainer } from '../components/TradingView';
+import FloatingElement from '../components/layout/FloatingElement';
+import MarketApi from '../utils/marketConnector';
 // Use following stub for quick setup without the TradingView private dependency
 // function TVChartContainer() {
 //   return <></>
@@ -213,7 +214,6 @@ function TradePageInner() {
       localStorage.setItem('snow', JSON.stringify({status: value, enable: true}));
     };
     return (
-      snow.enable ?
       <Col>
         <Switch
           checkedChildren={<HeartFilled />}
@@ -222,9 +222,156 @@ function TradePageInner() {
           onChange={onChangeSnow}
         />
       </Col>
-      : null
     );
   }
+
+  // Market Info
+  const { Text } = Typography;
+  const columns = [
+    {
+      title: 'Market',
+      dataIndex: 'market',
+      key: 'market',
+      className: 'align-left',
+      width: '30%',
+      render: market => (
+        <>
+          <div className={`pointer ${market.active ? "mkt-active" : ""}`} onClick={() => {
+            setHandleDeprecated(false);
+            setMarketAddress(market.address);
+          }}>
+            <Avatar
+              size={20}
+              src={market.icon}
+              style={{marginRight:'5px'}}
+              shape="square"
+            />
+            {market.name}
+          </div>
+        </>
+      )
+    },
+    {
+      title: 'Last Price',
+      dataIndex: 'lastprice',
+      key: 'lastprice',
+      className: 'align-right',
+      width: '30%'
+    },
+    {
+      title: '24h Chg',
+      dataIndex: 'chg24',
+      key: 'chg24',
+      className: 'align-right',
+      width: '20%',
+      render: chg24 => (
+        <>
+          {
+            (chg24 < 0) ?
+            <Text className="color-red">{chg24} %</Text> :
+            <Text className="color-green">{chg24} %</Text>
+          }
+        </>
+      )
+    },
+    {
+      title: '24h Vol',
+      dataIndex: 'vol24',
+      key: 'vol24',
+      className: 'align-right',
+      width: '20%'
+    },
+  ];
+  const [dataSource, setDataSource] = useState([]);
+  const [marketLoading, setMarketLoading] = useState(true);
+  const [mktinfoLoading, setMktinfoLoading] = useState(true);
+  const marketAddress = market?.address.toBase58();
+  const [mktName, setMktName] = useState('');
+  const [mktSymbol, setMktSymbol] = useState('');
+  const [mktBase, setMktBase] = useState('');
+  const [mktIcon, setMktIcon] = useState('');
+  const [mktLastPrice, setMktLastPrice] = useState(0);
+  const [mktHighPrice, setMktmktHighPrice] = useState(0);
+  const [mktLowPrice, setMktmktLowPrice] = useState(0);
+  const [mktVolume24, setMktmktVolume24] = useState('');
+  const [mktPrice24, setMktmktPrice24] = useState('');
+  const [mktChange24, setMktChange24] = useState(0);
+  const [mktChange24Perc, setMktChangePerc24] = useState('');
+  const [mktColor, setMktColor] = useState('rgb(1, 236, 152)');
+  useEffect(() => {
+    function nFormatter(num, digits) {
+      const lookup = [
+        { value: 1, symbol: "" },
+        { value: 1e3, symbol: "K" },
+        { value: 1e6, symbol: "M" },
+        { value: 1e9, symbol: "G" },
+        { value: 1e12, symbol: "T" },
+        { value: 1e15, symbol: "P" },
+        { value: 1e18, symbol: "E" }
+      ];
+      const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+      var item = lookup.slice().reverse().find(function(item) {
+        return num >= item.value;
+      });
+      return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+    }
+    async function getDataMarkets(fromInterval = true) {
+      if(!fromInterval) {
+        setMktinfoLoading(true);
+      }
+      let market_main_list = [] as any;
+      for (let i = 0; i < markets_ashera.length; i++) {
+        market_main_list[i] = markets_ashera[i]?.address;
+      }
+      const allMarketsData = await MarketApi.getAllMarkets() as  any;
+      if(allMarketsData === null || allMarketsData === undefined) {
+        return;
+      }
+      let dataMarket = [] as  any;
+      for (let i = 0; i < allMarketsData.length; i++) {
+        if(!market_main_list.includes(allMarketsData[i]?.address)) {
+          continue;
+        }
+        const lastprice = allMarketsData[i]?.hourSummary?.newPrice;
+        const oldPrice = allMarketsData[i]?.hourSummary?.oldPrice;
+        const market = allMarketsData[i]?.nameEn;
+        const address = allMarketsData[i]?.address;
+        const icon = allMarketsData[i]?.iconUrl;
+        const vol24 = allMarketsData[i]?.summary?.volume;
+        const chg24 = (lastprice - oldPrice)/oldPrice * 100;
+        let marketActive = false;
+        if(localStorage.getItem('marketAddress')?.replaceAll('"', '') === allMarketsData[i]?.address || 
+            (localStorage.getItem('marketAddress')?.replaceAll('"', '') === undefined && 
+            marketAddress === allMarketsData[i]?.address)
+          ) {
+          const color = (lastprice - oldPrice) < 0 ? 'rgb(242, 59, 105)' : 'rgb(1, 236, 152)';
+          setMktColor(color);
+          setMktName(allMarketsData[i]?.nameEn);
+          setMktSymbol(allMarketsData[i]?.symbol);
+          setMktBase(allMarketsData[i]?.base);
+          setMktIcon(allMarketsData[i]?.iconUrl);
+          setMktLastPrice(parseFloat(allMarketsData[i]?.hourSummary?.newPrice));
+          setMktmktHighPrice(allMarketsData[i]?.summary?.highPrice);
+          setMktmktLowPrice(allMarketsData[i]?.summary?.lowPrice);
+          const volume24 = allMarketsData[i]?.summary?.volume / allMarketsData[i]?.hourSummary?.newPrice;
+          setMktmktVolume24(nFormatter(volume24,2));
+          setMktmktPrice24(nFormatter(allMarketsData[i]?.summary?.volume, 2));
+          const change24Price = parseFloat(lastprice) - parseFloat(oldPrice);
+          setMktChange24(+change24Price.toFixed(9));
+          setMktChangePerc24(((lastprice - oldPrice)/oldPrice * 100).toFixed(2));
+          setMktinfoLoading(false);
+          marketActive = true;
+        }
+        dataMarket[dataMarket.length] = {market: {address: address, name: market, icon: icon, active: marketActive}, lastprice:parseFloat(lastprice), chg24: chg24.toFixed(2), vol24: nFormatter(vol24, 2)};
+      }
+      
+      setDataSource(dataMarket);
+      setMarketLoading(false);
+    }
+    getDataMarkets(false);
+    const id = setInterval(getDataMarkets, 20_000);
+    return () => clearInterval(id);
+  }, [marketAddress]);
 
   return (
     <>
@@ -252,39 +399,7 @@ function TradePageInner() {
             />
           </Col>
           <SnowSwitch />
-        </Row>
-        <Row
-          align="middle"
-          style={{ paddingLeft: 5, paddingRight: 5 }}
-          gutter={16}
-        >
-          <Col>
-            <MarketSelector
-              markets={markets}
-              setHandleDeprecated={setHandleDeprecated}
-              placeholder={'Select market'}
-              customMarkets={customMarkets}
-              onDeleteCustomMarket={onDeleteCustomMarket}
-            />
-          </Col>
-          {market ? (
-            <Col>
-              <Popover
-                content={<LinkAddress address={market.publicKey.toBase58()} />}
-                placement="bottomRight"
-                title="Market address"
-                trigger="click"
-              >
-                <InfoCircleOutlined style={{ color: '#2abdd2' }} />
-              </Popover>
-            </Col>
-          ) : null}
-          <Col>
-            <PlusCircleOutlined
-              style={{ color: '#2abdd2' }}
-              onClick={() => setAddMarketVisible(true)}
-            />
-          </Col>
+
           <Col style={{marginLeft: 'auto'}}>
             <Button 
               type="primary" 
@@ -294,23 +409,133 @@ function TradePageInner() {
               { width > 450 && 'My Token'}
             </Button>
           </Col>
-          {deprecatedMarkets && deprecatedMarkets.length > 0 && (
-            <React.Fragment>
-              <Col>
-                <Typography>
-                  You have unsettled funds on old markets! Please go through
-                  them to claim your funds.
-                </Typography>
-              </Col>
-              <Col>
-                <Button onClick={() => setHandleDeprecated(!handleDeprecated)}>
-                  {handleDeprecated ? 'View new markets' : 'Handle old markets'}
-                </Button>
-              </Col>
-            </React.Fragment>
-          )}
         </Row>
-        {component}
+        <Row>
+          <Col xs={24} sm={24} md={16} style={{ height: '100%' }}>
+            <FloatingElement>
+              <Row>
+                {
+                  mktinfoLoading ?
+                  <Skeleton />
+                  :
+                  <>
+                    <Col xl={24} lg={24}  md={24} xxl={24} sm={24} xs={24}
+                      style={{ borderBottom: '2px solid rgb(67, 74, 89)', marginBottom: '20px'}}>
+                      <span style={{ fontWeight: 'bold', fontSize: '20px', color: '#fff', marginRight: '6px'}}>
+                      <Avatar
+                        src={mktIcon}
+                        style={{marginRight:'5px', marginBottom: '5px'}}
+                        shape="square"
+                      />
+                      {mktName}
+                      </span>
+                      {mktSymbol}
+                      <Tag color="green" style={{ marginLeft: '6px'}}>Main Market</Tag>
+                    </Col>
+                    <Col xl={8} lg={8} md={8} xxl={8} sm={24} xs={24}>
+                      <div>
+                        <div>
+                          <div style={{letterSpacing: '1px', marginTop: '20px', fontWeight: 'bold', lineHeight: '120%'}}>
+                            <span style={{fontSize: '32px', color:mktColor}}>{mktLastPrice}</span>
+                            <span style={{fontSize: '14px', color:mktColor}}>USDC</span>
+                          </div>
+                          <div style={{lineHeight: '120%', marginTop: '3px'}}>
+                            <span style={{fontSize: '11px', color:mktColor}}>Change</span>
+                            <span style={{marginLeft: '5px', marginRight: '5px', fontSize: '14px', color:mktColor}}>
+                              {mktChange24Perc}%
+                            </span>
+                            <span style={{fontWeight: 'bold', color:mktColor}}>
+                              {
+                                mktColor === 'rgb(1, 236, 152)' ?
+                                <ArrowUpOutlined  style={{marginRight: '5px', fontSize: '15px'}}/>
+                                :
+                                <ArrowDownOutlined  style={{marginRight: '5px', fontSize: '15px'}}/>
+                              }
+                              {mktChange24}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col xl={16} lg={16} md={16} xxl={16} sm={24} xs={24} style={{textAlign: 'right'}}>
+                      <Row style={{marginTop: '5px'}}>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>High Price</Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
+                          style={{color: 'rgb(1, 236, 152)', borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
+                            {mktHighPrice}
+                        </Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Volume(24h)</Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
+                          style={{borderBottom: '1px solid rgb(67, 74, 89)'}}>
+                            {mktVolume24}
+                            <span style={{fontSize: '11px', color: 'rgb(153, 153, 153)', letterSpacing: '0.05em', marginLeft: '0.3rem'}}>
+                              {mktBase}
+                            </span>
+                        </Col>
+                      </Row>
+                      <Row style={{marginTop: '13px'}}>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Low Price</Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
+                          style={{color: 'rgb(242, 59, 105)', borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
+                            {mktLowPrice}
+                        </Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Price(24h)</Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
+                          style={{borderBottom: '1px solid rgb(67, 74, 89)'}}>
+                          {mktPrice24}
+                          <span style={{fontSize: '11px', color: 'rgb(153, 153, 153)', letterSpacing: '0.05em', marginLeft: '0.3rem'}}>USDC</span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </>
+                }
+              </Row>
+            </FloatingElement>
+            {component}
+          </Col>
+          <Col xs={24} sm={24} md={8}>
+            <FloatingElement>
+              <Row
+                align="middle"
+                style={{ paddingLeft: 5, paddingRight: 5 }}
+                gutter={16}
+              >
+                <Col style={{width: '100%'}}>
+                  <MarketSelector
+                    markets={markets}
+                    setHandleDeprecated={setHandleDeprecated}
+                    placeholder={'Select market'}
+                    customMarkets={customMarkets}
+                    onDeleteCustomMarket={onDeleteCustomMarket}
+                  />
+                </Col>
+                {deprecatedMarkets && deprecatedMarkets.length > 0 && (
+                  <React.Fragment>
+                    <Col>
+                      <Typography>
+                        You have unsettled funds on old markets! Please go through
+                        them to claim your funds.
+                      </Typography>
+                    </Col>
+                    <Col>
+                      <Button onClick={() => setHandleDeprecated(!handleDeprecated)}>
+                        {handleDeprecated ? 'View new markets' : 'Handle old markets'}
+                      </Button>
+                    </Col>
+                  </React.Fragment>
+                )}
+              </Row>
+            </FloatingElement>
+            <FloatingElement style={{ minHeight: '50%'}}>
+              <Table 
+                dataSource={dataSource}
+                columns={columns}
+                pagination={{ pageSize: 50 }}
+                loading={marketLoading}
+                className="table-market" />
+            </FloatingElement>
+          </Col>
+        </Row>
       </Wrapper>
     </>
   );
@@ -344,7 +569,7 @@ function MarketSelector({
     <Select
       showSearch
       size={'large'}
-      style={{ width: 200 }}
+      style={{ width: '100%' }}
       placeholder={placeholder || 'Select a market'}
       optionFilterProp="name"
       onSelect={onSetMarketAddress}
@@ -415,7 +640,12 @@ function MarketSelector({
             >
               <Avatar
                 src={image}
-                style={{ padding: '5px', marginRight: '4px'}}
+                style={{ height: '20px', width:'20px', marginRight: '25px', zIndex: 1, background: '#222c35', borderRadius: '50%'}}
+                shape="square"
+              />
+              <Avatar
+                src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png"
+                style={{ height: '20px', width:'20px', position: 'absolute', zIndex: 0, left: '18px', top: '10px'}}
                 shape="square"
               />
               {name} {deprecated ? ' (Deprecated)' : null}
@@ -442,35 +672,48 @@ const DeprecatedMarketsPage = ({ switchToLiveMarkets }) => {
 
 const RenderNormal = ({ onChangeOrderRef, onPrice, onSize }) => {
   return (
-    <Row
-      style={{
-        minHeight: '900px',
-        flexWrap: 'nowrap',
-      }}
-      className="row-rounded"
-    >
-      <Col flex="auto" style={{ height: '50vh' }}>
-        <Row style={{ height: '100%' }}>
-          <Card bordered={false} className="wrapper-floating-el" style={{ width: '100%', height: 'calc(100% - 8px)', marginTop: '5px', borderRadius: '20px' }}>
+    <>
+      <Row
+        style={{
+          height: '520px',
+        }}
+      >
+        <Col flex="auto" style={{ height: '100%', display: 'flex' }}>
+          <Card bordered={false} className="wrapper-floating-el" style={{ width: '100%', margin: '0 5px', height: 'calc(100% - 8px)', marginTop: '5px', borderRadius: '8px' }}>
             <TVChartContainer />
           </Card>
-        </Row>
-        <Row style={{ height: '70%' }}>
-          <UserInfoTable />
-        </Row>
-      </Col>
-      <Col flex={'360px'} style={{ height: '100%' }}>
-        <Orderbook smallScreen={false} onPrice={onPrice} onSize={onSize} />
-        <TradesTable smallScreen={false} />
-      </Col>
-      <Col
-        flex="400px"
-        style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+        </Col>
+      </Row>
+      <Row
+        style={{
+          height: '500px',
+        }}
       >
-        <TradeForm setChangeOrderRef={onChangeOrderRef} />
-        <StandaloneBalancesDisplay />
-      </Col>
-    </Row>
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
+        </Col>
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <TradeForm style={{ flex: 1 }} setChangeOrderRef={onChangeOrderRef} />
+        </Col>
+      </Row>
+      <Row
+        style={{
+          height: '500px',
+        }}
+      >
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <StandaloneBalancesDisplay />
+        </Col>
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <TradesTable smallScreen={true} />
+        </Col>
+      </Row>
+      <Row>
+        <Col flex="auto">
+          <UserInfoTable />
+        </Col>
+      </Row>
+    </>
   );
 };
 
@@ -479,48 +722,37 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize }) => {
     <>
       <Row
         style={{
-          height: '370px',
+          height: '520px',
         }}
-        className="row-rounded"
       >
         <Col flex="auto" style={{ height: '100%', display: 'flex' }}>
-          <Card bordered={false} className="wrapper-floating-el" style={{ width: '100%', height: 'calc(100% - 8px)', marginTop: '5px', borderRadius: '20px' }}>
+          <Card bordered={false} className="wrapper-floating-el" style={{ width: '100%', margin: '0 5px', height: 'calc(100% - 8px)', marginTop: '5px', borderRadius: '8px' }}>
             <TVChartContainer />
           </Card>
-        </Col>
-        <Col
-          flex="400px"
-          style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-        >
-          <TradeForm setChangeOrderRef={onChangeOrderRef} />
         </Col>
       </Row>
       <Row
         style={{
-          height: '900px',
-          marginTop: '8px'
+          height: '500px',
         }}
-        className="row-rounded"
       >
-        <Col flex="370px" style={{ height: '100%', display: 'flex' }}>
-          <Orderbook
-            smallScreen={true}
-            depth={13}
-            onPrice={onPrice}
-            onSize={onSize}
-          />
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
         </Col>
-        <Col
-          flex="370px"
-          style={{ height: '100%', display: 'flex', flexDirection: 'column', overflowY: 'scroll' }}
-        >
-          <TradesTable smallScreen={true} />
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <TradeForm style={{ flex: 1 }} setChangeOrderRef={onChangeOrderRef} />
         </Col>
-        <Col
-          flex="auto"
-          style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-        >
+      </Row>
+      <Row
+        style={{
+          height: '500px',
+        }}
+      >
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
           <StandaloneBalancesDisplay />
+        </Col>
+        <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
+          <TradesTable smallScreen={true} />
         </Col>
       </Row>
       <Row>
@@ -535,9 +767,9 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize }) => {
 const RenderSmaller = ({ onChangeOrderRef, onPrice, onSize }) => {
   return (
     <>
-      <Row style={{ height: '50vh' }}>
+      <Row style={{ height: '70vh' }}>
         <Col flex="auto" style={{ height: '100%', display: 'flex' }}>
-          <Card bordered={false} className="wrapper-floating-el" style={{ width: '100%', height: 'calc(100% - 8px)', marginTop: '5px', borderRadius: '20px' }}>
+          <Card bordered={false} className="wrapper-floating-el" style={{ width: '100%', margin: '0 5px', height: 'calc(100% - 8px)', marginTop: '5px', borderRadius: '8px' }}>
             <TVChartContainer />
           </Card>
         </Col>

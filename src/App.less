@@ -90,8 +90,13 @@ input[type=number]:focus::-webkit-inner-spin-button {
   display: none;
 }
 .badge-primary {
-  color: #ED54F4; 
+  color: #ED54F4 !important; 
   background: #262626;
+}
+.badge-secondary {
+  color: #fff !important; 
+  background: #ff002385;
+  font-weight: bold;
 }
 .badge-soon {
   font-size: 9px;
@@ -275,3 +280,45 @@ header.ant-layout-header.App-Bar {
   border-radius: 10px;
 }
 /* END - Trading View */
+
+/* START - Market Info */
+.pool-img .ant-image {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.table-market {
+  overflow-x: hidden;
+}
+.table-market table tr td {
+  padding: 0px;
+  background: #222c35;
+}
+.table-market table thead th {
+  font-weight: bold;
+  padding: 0;
+  padding-bottom: 15px;
+}
+.align-left {
+  text-align: left !important;
+}
+.align-right {
+  text-align: right !important;
+}
+.color-red {
+  color: rgb(242, 59, 105);
+}
+.color-green {
+  color: rgb(65, 199, 122);
+}
+.pointer {
+  cursor: pointer;
+}
+.ant-avatar-square img {
+  border-radius: 50%;
+}
+.mkt-active {
+  color: #f5b217;
+  font-weight: bold;
+}
+/* END - Market Info */

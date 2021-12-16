@@ -17,7 +17,7 @@
     },
     {
         "name": "BST/USDC",
-        "image": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EYDEQW4xQzLqHcFwHTgGvpdjsa5EFn74KzuqLX5emjD2.png",
+        "image": "https://raw.githubusercontent.com/kadekjr/token-list/0221556704ee32da7898a6deb43e61857e7c0700/assets/mainnet/EYDEQW4xQzLqHcFwHTgGvpdjsa5EFn74KzuqLX5emjD2/logo.png",
         "address": "Hq2tZzrdNrMtDsdXeCf9CrN3aS3geJTEqtLRPyiYRZc",
         "deprecated": false,
         "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
@@ -70,6 +70,14 @@
         "deprecated": false,
         "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
         "mintAddress": "A9UhP1xfQHWUhSd54NgKPub2XB3ZuQMdPEvf9aMTHxGT"
+    },
+    {
+        "name": "DIBU/USDC",
+        "image": "https://cdn.jsdelivr.net/gh/xRoBBeRT/DIBU-logo/DickButPhantomLogo.png",
+        "address": "TCLvUMwd9XBz3qp2oFTQ9L6SHNoQETJ1f7wEV6QCt2Y",
+        "deprecated": false,
+        "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        "mintAddress": "GLStmw33pftMX9w1AkMEUhB8pDcWQYw33VopUxJJdHbu"
     },
     {
         "name": "DONKEYHEEH/USDC",
@@ -134,6 +142,14 @@
         "deprecated": false,
         "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
         "mintAddress": "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6"
+    },
+    {
+        "name": "KITTY/USDC",
+        "image": "https://raw.githubusercontent.com/Kittysolana/token-list/e83afb85b3c56d849f3dd3ccafad736f7b33c2da/assets/mainnet/6JdcMdhqgCtcP4U9tieRqmKLhPLxRMLC67QfmdXAJBvZ/logo.png",
+        "address": "8bjQ8XvzrDxKxHhTccpLkqGLbBrCAAPuv6KHrgN95nDW",
+        "deprecated": false,
+        "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        "mintAddress": "6JdcMdhqgCtcP4U9tieRqmKLhPLxRMLC67QfmdXAJBvZ"
     },
     {
         "name": "LINK/USDC",
@@ -214,6 +230,14 @@
         "deprecated": false,
         "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
         "mintAddress": "z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M"
+    },
+    {
+        "name": "PAWS/USDC",
+        "image": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/6bLp99VoqKU1C3Qp6VTNvSoCoc78jMGxPkGSSopq8wHB/logo.png",
+        "address": "FDvJeLH6tT1sFJWVtP9y8ygu5CqbiLGQgcRWbVTMpzs3",
+        "deprecated": false,
+        "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        "mintAddress": "6bLp99VoqKU1C3Qp6VTNvSoCoc78jMGxPkGSSopq8wHB"
     },
     {
         "name": "RAY/USDC",

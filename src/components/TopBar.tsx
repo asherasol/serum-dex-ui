@@ -4,7 +4,7 @@ import {
 import { Button, Menu, Badge, Dropdown } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo-santa.png';
 import { useWallet } from '../utils/wallet';
 import { ENDPOINTS, useConnectionConfig } from '../utils/connection';
 import WalletConnect from './WalletConnect';
@@ -41,7 +41,7 @@ export default function TopBar() {
         <Link to={tradePageUrl}>
           <Button className="app-btn">Trade</Button>
         </Link>
-        {connected && (!searchFocussed || location.pathname === '/balances') && (
+        {/* {connected && (!searchFocussed || location.pathname === '/balances') && (
           <Link to={`/balances`}>
             <Button className="app-btn">Balances</Button>
           </Link>
@@ -55,10 +55,16 @@ export default function TopBar() {
           <Link to={`/convert`}>
             <Button className="app-btn">Convert</Button>
           </Link>
-        )}
+        )} */}
         <Link to={`/list-new-market`}>
           <Button className="app-btn">Add Market</Button>
         </Link>
+        <a href={`https://verify.asherasol.com`} target='_blank'>
+          <Button className="app-btn">
+            Verify Wallet
+            <Badge className="badge-secondary badge-soon rounded">NEW</Badge>
+          </Button>
+        </a>
         <Link to={`#soon-mytoken`}>
           <Button className="app-btn">
             My Wallet
@@ -114,6 +120,14 @@ export default function TopBar() {
             <Link to={'/list-new-market'}>
               <Button className="app-btn">Add Market</Button>
             </Link>
+          </Menu.Item>
+          <Menu.Item>
+            <a href={'https://verify.asherasol.com'} target='_blank'>
+              <Button className="app-btn">
+                Verify Wallet
+                <Badge className="badge-secondary badge-soon rounded">NEW</Badge>
+              </Button>
+            </a>
           </Menu.Item>
           <Menu.Item>
             <Link to={'#soon-mytoken'}>

@@ -77,6 +77,7 @@ export const TVChartContainer = () => {
 
   const tvWidgetRef = React.useRef<IChartingLibraryWidget | null>(null);
   const { market } = useMarket();
+  const marketAddress = market?.address.toBase58();
 
   const chartProperties = JSON.parse(
     localStorage.getItem('chartproperties') || '{}',
@@ -171,13 +172,13 @@ export const TVChartContainer = () => {
     tvWidget.onChartReady(() => {
       //tvWidget.addCustomCSSFile('css/my-custom-css.css')
       tvWidgetRef.current = tvWidget;
-      tvWidgetRef.current.chart().setChartType(3);
+      //tvWidgetRef.current.chart().setChartType(3);
       tvWidget
         // @ts-ignore
         .subscribe('onAutoSaveNeeded', () => tvWidget.saveChartToServer());
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [market, tvWidgetRef.current, theme]);
+  }, [marketAddress, theme]);
 
   return <div id={defaultProps.containerId} className={'TVChartContainer'} />;
 };

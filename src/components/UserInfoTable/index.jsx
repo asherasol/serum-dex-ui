@@ -13,10 +13,7 @@ const { TabPane } = Tabs;
 export default function Index() {
   const { market } = useMarket();
   return (
-    <FloatingElement
-      style={{ flex: 1, paddingTop: 20, borderRadius: '20px' }}
-      className="rounded"
-    >
+    <FloatingElement style={{ flex: 1, paddingTop: 20 }} className="rounded">
       <Typography>
         <Paragraph className="user-info-p">
           Make sure to go to Balances and click Settle to send out your funds.

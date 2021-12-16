@@ -12,7 +12,7 @@ import Particles from "react-tsparticles";
 
 export default function App() {
   // Default variable
-  localStorage.setItem('snow', JSON.stringify({status: false, enable: true}));
+  localStorage.setItem('snow', JSON.stringify({status: false, enable: false}));
   let theme = {mode:'dark'};
 
   // Get data from localstorage
@@ -30,13 +30,13 @@ export default function App() {
   };
 
   const ParticlesBg = () => {
-    const [showResults, setShowResults] = React.useState(true);
+    const [showResults, setShowResults] = React.useState(false);
     setInterval(() => {
       const saved_snow = localStorage.getItem('snow');
       if (saved_snow) {
         setShowResults(JSON.parse(saved_snow).status);
       } else {
-        localStorage.setItem('snow', JSON.stringify({status: false, enable: true}));
+        localStorage.setItem('snow', JSON.stringify({status: false, enable: false}));
       }
     }, 1000);
     return (

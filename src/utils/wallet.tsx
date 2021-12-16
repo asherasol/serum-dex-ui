@@ -155,7 +155,7 @@ export function WalletProvider({ children }) {
                     const amount = parsedAccount.tokenAmount.uiAmount;
                     if(mint === 'FY6XDSCubMhpkU9FAsUjB7jmN8YHYZGezHTWo9RHBSyX' &&
                       amount >= 2000000) {
-                        localStorage.setItem('snow', JSON.stringify({status: false, enable: true}));
+                        //localStorage.setItem('snow', JSON.stringify({status: false, enable: true}));
                     }
                   });
                 }

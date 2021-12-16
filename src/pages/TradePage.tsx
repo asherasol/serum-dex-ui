@@ -193,7 +193,7 @@ function TradePageInner() {
 
   // Snow mode handle
   const SnowSwitch = () => {
-    const [snow, setSnow] = useState({status: false, enable: true});
+    const [snow, setSnow] = useState({status: false, enable: false});
     /* useEffect(() => {
       const intervalId = setInterval(() => {
         const saved_snow = localStorage.getItem('snow');
@@ -344,7 +344,6 @@ function TradePageInner() {
             (localStorage.getItem('marketAddress')?.replaceAll('"', '') === undefined && 
             marketAddress === allMarketsData[i]?.address)
           ) {
-          const color = (lastprice - oldPrice) < 0 ? 'rgb(242, 59, 105)' : 'rgb(1, 236, 152)';
           const classColor = (lastprice - oldPrice) < 0 ? 'color-red' : 'color-green';
           setMktClassColor(classColor);
           setMktName(allMarketsData[i]?.nameEn);
@@ -701,7 +700,7 @@ const RenderNormal = ({ onChangeOrderRef, onPrice, onSize }) => {
       </Row>
       <Row
         style={{
-          height: '500px',
+          height: '580px',
         }}
       >
         <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
@@ -748,7 +747,7 @@ const RenderSmall = ({ onChangeOrderRef, onPrice, onSize }) => {
       </Row>
       <Row
         style={{
-          height: '500px',
+          height: '580px',
         }}
       >
         <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
@@ -777,12 +776,12 @@ const RenderSmaller = ({ onChangeOrderRef, onPrice, onSize }) => {
           </Card>
         </Col>
       </Row>
-      <Row className="row-rounded">
+      <Row>
         <Col flex="auto" style={{ height: '100%', display: 'flex' }}>
           <TradeForm style={{ flex: 1 }} setChangeOrderRef={onChangeOrderRef} />
         </Col>
       </Row>
-      <Row className="row-rounded">
+      <Row>
         <Col flex="auto">
           <StandaloneBalancesDisplay />
         </Col>
@@ -791,7 +790,6 @@ const RenderSmaller = ({ onChangeOrderRef, onPrice, onSize }) => {
         style={{
           height: '500px', overflow: 'hidden'
         }}
-        className="row-rounded"
       >
         <Col xs={24} sm={12} style={{ height: '100%', display: 'flex' }}>
           <Orderbook smallScreen={true} onPrice={onPrice} onSize={onSize} />
@@ -800,7 +798,7 @@ const RenderSmaller = ({ onChangeOrderRef, onPrice, onSize }) => {
           <TradesTable smallScreen={true} />
         </Col>
       </Row>
-      <Row className="row-rounded">
+      <Row>
         <Col flex="auto">
           <UserInfoTable />
         </Col>

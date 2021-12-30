@@ -56,8 +56,11 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write src",
-    "prepareDex": "yarn copy-files && yarn gen-css && yarn gen-dark-css",
-    "copy-files": "cp -r ./src/{markets.json,token-mints.json} ./node_modules/@project-serum/serum/lib/",
+    "prepareDex": "yarn copy-files && yarn copy-files2 && yarn copy-files3 && yarn copy-files4 && yarn gen-css && yarn gen-dark-css",
+    "copy-files": "cp -r ./src/markets.json ./node_modules/@project-serum/serum/lib/",
+    "copy-files2": "cp -r ./src/token-mints.json ./node_modules/@project-serum/serum/lib/",
+    "copy-files3": "cp -r ./src/token-instructions.js ./node_modules/@project-serum/serum/lib/",
+    "copy-files4": "cp -r ./src/token-instructions.d.ts ./node_modules/@project-serum/serum/lib/",
     "gen-css": "lessc ./src/App-light.less ./public/theme/antd.min.css --js",
     "gen-dark-css": "lessc ./src/App.less ./public/theme/antd.dark.min.css --js"
   },

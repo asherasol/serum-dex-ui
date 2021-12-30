@@ -289,6 +289,7 @@ function TradePageInner() {
   const [mktName, setMktName] = useState('');
   const [mktSymbol, setMktSymbol] = useState('');
   const [mktBase, setMktBase] = useState('');
+  const [mktQuote, setMktQuote] = useState('');
   const [mktIcon, setMktIcon] = useState('');
   const [mktLastPrice, setMktLastPrice] = useState(0);
   const [mktHighPrice, setMktmktHighPrice] = useState(0);
@@ -320,14 +321,18 @@ function TradePageInner() {
         setMktinfoLoading(true);
       }
       let market_main_list = [] as any;
+      let asheraMarketAddress = '';
       for (let i = 0; i < markets_ashera.length; i++) {
+        if(markets_ashera[i]?.name === 'ASH/USDC'){
+          asheraMarketAddress = markets_ashera[i]?.address;
+        }
         market_main_list[i] = markets_ashera[i]?.address;
       }
       const allMarketsData = await MarketApi.getAllMarkets() as  any;
       if(allMarketsData === null || allMarketsData === undefined) {
         return;
       }
-      let dataMarket = [] as  any;
+      let dataMarket = [] as any;
       for (let i = 0; i < allMarketsData.length; i++) {
         if(!market_main_list.includes(allMarketsData[i]?.address)) {
           continue;
@@ -349,6 +354,7 @@ function TradePageInner() {
           setMktName(allMarketsData[i]?.nameEn);
           setMktSymbol(allMarketsData[i]?.symbol);
           setMktBase(allMarketsData[i]?.base);
+          setMktQuote(allMarketsData[i]?.quote);
           setMktIcon(allMarketsData[i]?.iconUrl);
           setMktLastPrice(parseFloat(allMarketsData[i]?.hourSummary?.newPrice));
           setMktmktHighPrice(allMarketsData[i]?.summary?.highPrice);
@@ -362,7 +368,12 @@ function TradePageInner() {
           setMktinfoLoading(false);
           marketActive = true;
         }
-        dataMarket[dataMarket.length] = {market: {address: address, name: market, icon: icon, active: marketActive}, lastprice:parseFloat(lastprice), chg24: chg24.toFixed(2), vol24: nFormatter(vol24, 2)};
+        if(asheraMarketAddress === allMarketsData[i]?.address){
+          dataMarket = [{market: {address: address, name: market, icon: icon, active: marketActive}, lastprice:parseFloat(lastprice), chg24: chg24.toFixed(2), vol24: nFormatter(vol24, 2)}].concat(dataMarket);
+          continue;
+        } else {
+          dataMarket.push({market: {address: address, name: market, icon: icon, active: marketActive}, lastprice:parseFloat(lastprice), chg24: chg24.toFixed(2), vol24: nFormatter(vol24, 2)});
+        }
       }
       
       setDataSource(dataMarket);
@@ -437,7 +448,7 @@ function TradePageInner() {
                         <div>
                           <div style={{letterSpacing: '1px', marginTop: '20px', fontWeight: 'bold', lineHeight: '120%'}}>
                             <span className={mktClassColor} style={{fontSize: '32px'}}>{mktLastPrice}</span>
-                            <span className={mktClassColor} style={{fontSize: '14px'}}>USDC</span>
+                            <span className={mktClassColor} style={{fontSize: '14px'}}>{mktQuote}</span>
                           </div>
                           <div style={{lineHeight: '120%', marginTop: '3px'}}>
                             <span className={mktClassColor} style={{fontSize: '11px'}}>Change</span>
@@ -465,7 +476,7 @@ function TradePageInner() {
                           style={{borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
                             {mktHighPrice}
                         </Col>
-                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Volume(24h)</Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Volume (24h)</Col>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
                           style={{borderBottom: '1px solid rgb(67, 74, 89)'}}>
                             {mktVolume24}
@@ -481,11 +492,11 @@ function TradePageInner() {
                           style={{borderBottom: '1px solid rgb(67, 74, 89)', fontWeight: 'bold'}}>
                             {mktLowPrice}
                         </Col>
-                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Price(24h)</Col>
+                        <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}>Volume (24h)</Col>
                         <Col xl={6} lg={6} md={6} xxl={6} sm={12} xs={12}
                           style={{borderBottom: '1px solid rgb(67, 74, 89)'}}>
                           {mktPrice24}
-                          <span style={{fontSize: '11px', color: 'rgb(153, 153, 153)', letterSpacing: '0.05em', marginLeft: '0.3rem'}}>USDC</span>
+                          <span style={{fontSize: '11px', color: 'rgb(153, 153, 153)', letterSpacing: '0.05em', marginLeft: '0.3rem'}}>{mktQuote}</span>
                         </Col>
                       </Row>
                     </Col>

@@ -29,6 +29,10 @@ const RowBox = styled(Row)`
   padding-bottom: 20px;
 `;
 
+const RowNoPad = styled(Row)`
+  padding-bottom: 0px;
+`;
+
 const Tip = styled.p`
   font-size: 12px;
   padding-top: 6px;
@@ -229,8 +233,8 @@ export default function StandaloneBalancesDisplay() {
               <Col>Unsettled balance:</Col>
               <Col>{balances && balances.unsettled}</Col>
             </RowBox>
-            <RowBox align="middle" justify="space-around">
-              <Col style={{ width: 150 }}>
+            <RowNoPad align="middle" justify="space-around">
+              <Col style={{ width: 150, paddingBottom: 15 }}>
                 <ActionButton
                   block
                   size="large"
@@ -240,12 +244,12 @@ export default function StandaloneBalancesDisplay() {
                   Deposit
                 </ActionButton>
               </Col>
-              <Col style={{ width: 150 }}>
+              <Col style={{ width: 150, paddingBottom: 15 }}>
                 <ActionButton block size="large" onClick={onSettleFunds} className="rounded btn-action">
                   Settle
                 </ActionButton>
               </Col>
-            </RowBox>
+            </RowNoPad>
             <Tip>
               All deposits go to your{' '}
               <Link external to={providerUrl}>

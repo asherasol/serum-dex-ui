@@ -57,7 +57,7 @@ export default function TopBar() {
           </Link>
         )} */}
         <Link to={`/list-new-market`}>
-          <Button className="app-btn">Add Market</Button>
+          <Button className="app-btn">Create Market</Button>
         </Link>
         <a href={`https://verify.asherasol.com`} target='_blank'>
           <Button className="app-btn">
@@ -95,7 +95,7 @@ export default function TopBar() {
               <Button className="app-btn">Trade</Button>
             </Link>
           </Menu.Item>
-          {connected && (!searchFocussed || location.pathname === '/balances') && (
+          {/* {connected && (!searchFocussed || location.pathname === '/balances') && (
             <Menu.Item>
               <Link to={'/balances'}>
                 <Button className="app-btn">Balances</Button>
@@ -115,10 +115,10 @@ export default function TopBar() {
                 <Button className="app-btn">Convert</Button>
               </Link>
             </Menu.Item>
-          )}
+          )} */}
           <Menu.Item>
             <Link to={'/list-new-market'}>
-              <Button className="app-btn">Add Market</Button>
+              <Button className="app-btn">Create Market</Button>
             </Link>
           </Menu.Item>
           <Menu.Item>

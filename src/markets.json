@@ -304,6 +304,14 @@
         "mintAddress": "So11111111111111111111111111111111111111112"
     },
     {
+        "name": "SOLNUT/USDC",
+        "image": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Fv3ZG56M2cWvF8sy9VWzWyvtHPhugNc1BAzpyoAPvL7r/logo.png",
+        "address": "CUttKiPJyu3dsfNwzaEHusGqY36qNkuWcZrVGrnPe9KQ",
+        "deprecated": false,
+        "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        "mintAddress": "Fv3ZG56M2cWvF8sy9VWzWyvtHPhugNc1BAzpyoAPvL7r"
+    },
+    {
         "name": "WOOF/USDC",
         "image": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/9nEqaUcb16sQ3Tn1psbkWqyhPdLmfHWjKGymREjsAgTE/logo.png",
         "address": "CwK9brJ43MR4BJz2dwnDM7EXCNyHhGqCJDrAdsEts8n5",

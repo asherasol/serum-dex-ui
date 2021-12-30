@@ -112,7 +112,7 @@ export default function ListNewMarketPage() {
   return (
     <Wrapper>
       <FloatingElement>
-        <Title level={4}>List New Market</Title>
+        <Title level={4}>Create New Market</Title>
         <Form
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}

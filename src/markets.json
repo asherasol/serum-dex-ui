@@ -48,6 +48,14 @@
         "mintAddress": "5p2zjqCd1WJzAVgcEnjhb9zWDU7b9XVhFhx4usiyN7jB"
     },
     {
+        "name": "CHIH/USDC",
+        "image": "https://raw.githubusercontent.com/ChihuahuaSol/Chihuahua/main/chihuahua-token.png",
+        "address": "prLiL5ZsdKxDWT6doGZ4sEYHPoFxPBEGU5vJXffzShe",
+        "deprecated": false,
+        "programId": "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        "mintAddress": "6xtyNYX6Rf4Kp3629X11m1jqUmkV89mf9xQakUtUQfHq"
+    },
+    {
         "name": "COPE/USDC",
         "image": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh/logo.png",
         "address": "6fc7v3PmjZG9Lk2XTot6BywGyYLkBQuzuFKd4FpCsPxk",
